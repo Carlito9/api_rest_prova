@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "/BclbY3sxMpfxepT3m4bBavQArxFoxd3fZS0Vxjewvck0AveOQFGyay2Slp0UGmrB3Ynd9hBpX47a7OxRfYguQ==",
+  "dgSpecHash": "fD4i4qshg4qgukg9ZZPAxgh5pEX0aFTQeu6MGLnAvlqidZs+3XELSkJOXVNtKf/uaV+9msy17ecml44xMrnEhg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\n.carletti\\source\\repos\\apiRestProva\\apiRestProva\\apiRestProva.csproj",
+  "projectFilePath": "C:\\Users\\n.carletti\\source\\repos\\api_rest_prova\\apiRestProva\\apiRestProva\\apiRestProva.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\n.carletti\\.nuget\\packages\\microsoft.entityframeworkcore\\7.0.11\\microsoft.entityframeworkcore.7.0.11.nupkg.sha512",
     "C:\\Users\\n.carletti\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\7.0.11\\microsoft.entityframeworkcore.abstractions.7.0.11.nupkg.sha512",

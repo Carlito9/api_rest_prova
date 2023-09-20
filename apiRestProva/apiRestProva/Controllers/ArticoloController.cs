@@ -12,6 +12,7 @@ namespace apiRestProva.Controllers
         
 
         private readonly IArticoloService articoloService;
+        int a = 5;
 
         public ArticoloController(IArticoloService _articoloService)
         {

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\n.carletti\\source\\repos\\apiRestProva\\apiRestProva\\apiRestProva.csproj": {}
+    "C:\\Users\\n.carletti\\source\\repos\\api_rest_prova\\apiRestProva\\apiRestProva\\apiRestProva.csproj": {}
   },
   "projects": {
-    "C:\\Users\\n.carletti\\source\\repos\\apiRestProva\\apiRestProva\\apiRestProva.csproj": {
+    "C:\\Users\\n.carletti\\source\\repos\\api_rest_prova\\apiRestProva\\apiRestProva\\apiRestProva.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\n.carletti\\source\\repos\\apiRestProva\\apiRestProva\\apiRestProva.csproj",
+        "projectUniqueName": "C:\\Users\\n.carletti\\source\\repos\\api_rest_prova\\apiRestProva\\apiRestProva\\apiRestProva.csproj",
         "projectName": "apiRestProva",
-        "projectPath": "C:\\Users\\n.carletti\\source\\repos\\apiRestProva\\apiRestProva\\apiRestProva.csproj",
+        "projectPath": "C:\\Users\\n.carletti\\source\\repos\\api_rest_prova\\apiRestProva\\apiRestProva\\apiRestProva.csproj",
         "packagesPath": "C:\\Users\\n.carletti\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\n.carletti\\source\\repos\\apiRestProva\\apiRestProva\\obj\\",
+        "outputPath": "C:\\Users\\n.carletti\\source\\repos\\api_rest_prova\\apiRestProva\\apiRestProva\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\n.carletti\\AppData\\Roaming\\NuGet\\NuGet.Config",
