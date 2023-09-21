@@ -1,20 +1,20 @@
 ﻿using apiRestProva.Db;
-using apiRestProva.Entities;
+using apiRestProva.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace apiRestProva.Services
 {
-    public class ArticoloService : IArticoloService
+    public class ArticleService : IArticleService
     {
         private readonly ProvaDbContext dbContext;
-        public ArticoloService(ProvaDbContext _dbContext)
+        public ArticleService(ProvaDbContext _dbContext)
         {
             dbContext = _dbContext;
             dbContext.FillDB();
         }
-        public async Task<List<Articolo>> GetArticoli()
+        public async Task<List<ArticleDTO>> GetArticoli()
         {
-            return dbContext.Articoli.ToList();
+            return null;
         }
     }
 }

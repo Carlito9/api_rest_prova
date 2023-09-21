@@ -7,14 +7,14 @@ namespace apiRestProva.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ArticoloController : ControllerBase
+    public class ArticleController : ControllerBase
     {
         
 
-        private readonly IArticoloService articoloService;
-        int a = 5;
+        private readonly IArticleService articoloService;
+       
 
-        public ArticoloController(IArticoloService _articoloService)
+        public ArticleController(IArticleService _articoloService)
         {
             articoloService = _articoloService;
         }

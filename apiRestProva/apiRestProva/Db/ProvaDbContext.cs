@@ -5,7 +5,8 @@ namespace apiRestProva.Db
 {
     public class ProvaDbContext : DbContext
     {
-        public DbSet<Articolo> Articoli { get; set; }
+        public DbSet<Article> Articoli { get; set; }
+        public DbSet<AuthToken> Tokens { get; set; }
         protected override void OnConfiguring
        (DbContextOptionsBuilder optionsBuilder)
         {
@@ -13,10 +14,27 @@ namespace apiRestProva.Db
         }
 
        
+        public async Task AddToken (AuthToken _token)
+        {
+            Tokens.Add(_token);
+            await this.SaveChangesAsync().ConfigureAwait(false);
+        }
 
+        public async Task<AuthToken> GetToken(AuthToken _token)
+        {
+            return await Tokens.FirstOrDefaultAsync(t => t.AccessToken == _token.AccessToken).ConfigureAwait(false);  
+        }
+
+        public async Task<bool> BurnToken(AuthToken _token)
+        {
+            var token = GetToken(_token);
+            token.Result.validity = false;
+            await this.SaveChangesAsync().ConfigureAwait(false);
+            return true;
+        }
         public async Task FillDB()
         {
-            Articoli.Add(new Articolo
+            Articoli.Add(new Article
             {
                 codiceArticolo = "tckt1",
                 descrizioneArticolo = "biglietto_autobus_regionale",
@@ -25,7 +43,7 @@ namespace apiRestProva.Db
                 idCatalogoArticolo = 12345
             });
 
-            Articoli.Add(new Articolo
+            Articoli.Add(new Article
             {
                 codiceArticolo = "tckt2",
                 descrizioneArticolo = "biglietto_autobus_nazionale",
@@ -33,7 +51,7 @@ namespace apiRestProva.Db
                 prezzo = 5,
                 idCatalogoArticolo = 16345
             });
-            Articoli.Add(new Articolo
+            Articoli.Add(new Article
             {
                 codiceArticolo = "tckt3",
                 descrizioneArticolo = "biglietto_autobus_regionale",
@@ -41,7 +59,7 @@ namespace apiRestProva.Db
                 prezzo = 0.5,
                 idCatalogoArticolo = 120345
             });
-            Articoli.Add(new Articolo
+            Articoli.Add(new Article
             {
                 codiceArticolo = "tckt4",
                 descrizioneArticolo = "biglietto_treno_nazionale",
