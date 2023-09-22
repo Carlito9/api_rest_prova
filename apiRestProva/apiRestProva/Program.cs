@@ -4,11 +4,13 @@ using apiRestProva.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 var Configuration = builder.Configuration;
-
+builder.Services.AddSingleton(Configuration);
 //creo la dipendenza per jwt settings
 
 //ottengo la sezione del file json chiamata JWTsettings
@@ -18,7 +20,8 @@ var settings = section.Get<JwtSettings>();
 //dep inj fatta apposta per i file options
 var jwtSettings = builder.Services.Configure<JwtSettings>(section);
 // Add services to the container.
-
+//aggiungi chiamate httpclient
+builder.Services.AddHttpClient<HttpClientService>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -39,6 +42,7 @@ builder.Services.AddAuthentication("Bearer")
 builder.Services.AddDbContext<ProvaDbContext>();
 builder.Services.AddScoped<IArticleService,ArticleService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICartService, CartService>();
 
 var app = builder.Build();
 

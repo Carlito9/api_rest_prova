@@ -19,7 +19,7 @@ namespace apiRestProva.Services
             dbContext = _dbContext;
         }
 
-        public Task<AuthToken> LoginAsync(LoginRequest request)
+        public async Task<AuthToken> LoginAsync(LoginRequest request)
         {
             if (request.Password.Equals("pluservice"))
             {
@@ -50,12 +50,12 @@ namespace apiRestProva.Services
                 //nuovo oggetto auth response che contiene token
                 var result = new AuthToken { AccessToken = accessToken, validity =true };
 
-                dbContext.AddToken(result);
-                //restituisco in async come da prassi
-                return Task.FromResult(result);
+                await dbContext.Add(result);
+                
+                return result;
             }
-            //devo scrivere così per ritornare un null
-            return Task.FromResult<AuthToken>(null);
+            
+            return null;
         }
 
         public Task<bool> LogoutAsync(AuthToken authToken)
