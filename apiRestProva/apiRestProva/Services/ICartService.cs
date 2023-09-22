@@ -11,7 +11,7 @@ namespace apiRestProva.Services
         Task<CartDTO> GetCart(string cartId);
         Task UpdateCart(string cartId, ArticleCartDTO article);
 
-        Task<Cart> Preview(string cartId);
+        Task<PreviewDTO> Preview(string cartId);
         Task<string> Buy(string cartId, decimal totalAmount);
     }
 }

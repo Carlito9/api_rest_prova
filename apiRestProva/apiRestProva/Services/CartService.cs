@@ -54,13 +54,14 @@ namespace apiRestProva.Services
         }
         public Task<CartDTO> GetCart(string cartId)
         {
-            var cart = dbContext.Carts.Include(c => c.articles).FirstOrDefault(c => c.cartId == cartId);
-            return Task.FromResult(cart.MapToDTO());
+            var cart = dbContext.Carts.Include(c => c.articles).FirstOrDefaultAsync(c => c.cartId == cartId);
+            return Task.FromResult(cart.Result.MapToDTO());
         }
 
-        public Task<Cart> Preview(string cartId)
+        public Task<PreviewDTO> Preview(string cartId)
         {
-            return Task.FromResult(dbContext.Carts.Include(c => c.articles).FirstOrDefault(c => c.cartId == cartId));
+            var cart = dbContext.Carts.Include(c => c.articles).FirstOrDefaultAsync(c => c.cartId == cartId);
+            return Task.FromResult(cart.Result.MapToPreview());
         }
 
         public async Task UpdateCart(string cartId, ArticleCartDTO article)

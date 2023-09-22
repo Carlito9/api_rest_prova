@@ -2,6 +2,7 @@
 using apiRestProva.Entities;
 using apiRestProva.Models;
 using apiRestProva.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace apiRestProva.Controllers
@@ -29,6 +30,7 @@ namespace apiRestProva.Controllers
         }
 
         [HttpPost("CreateCart")]
+        [Authorize]
         public async Task<IActionResult> CreateCart(string username, string deviceId)
         {
             var cartId = await cartService.CreateCart(username, deviceId).ConfigureAwait(false);
@@ -44,6 +46,12 @@ namespace apiRestProva.Controllers
             return Ok();
         }
 
+        [HttpGet("GetCart")]
+        public async Task<IActionResult> GetCart(string cartId)
+        {
+            var carrello = await cartService.GetCart(cartId).ConfigureAwait(false);
+            return Ok(carrello);
+        }
         //stesso nome non da errore
         [HttpGet("Preview")]
         public async Task<IActionResult> Preview(string cartId)

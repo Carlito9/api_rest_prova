@@ -22,11 +22,23 @@ namespace apiRestProva.Entities
                 articleDTO.Add(ac.MapToDTO());
             }
             cartDTO.expireCartDatetime = expireCartDatetime;
-            cartDTO.totalAmount = totalAmount;
+            cartDTO.cartId = cartId;
             cartDTO.articles = articleDTO;
             return cartDTO;
         }
-
+        public PreviewDTO MapToPreview()
+        {
+            var previewDTO = new PreviewDTO();
+            var articleDTO = new List<ArticleCartDTO>();
+            foreach (var ac in articles)
+            {
+                articleDTO.Add(ac.MapToDTO());
+            }
+            previewDTO.expireCartDatetime = expireCartDatetime;
+            previewDTO.cartId = cartId;
+            previewDTO.articles = articleDTO;
+            return previewDTO;
+        }
 
     }
 

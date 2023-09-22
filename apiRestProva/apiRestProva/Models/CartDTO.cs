@@ -6,6 +6,6 @@ namespace apiRestProva.Models
     {
         public List<ArticleCartDTO> articles { get; set; }
         public DateTime expireCartDatetime { get; set; }
-        public decimal totalAmount { get; set; }
+        public string cartId { get; set; }
     }
 }
