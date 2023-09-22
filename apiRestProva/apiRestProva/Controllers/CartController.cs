@@ -45,11 +45,17 @@ namespace apiRestProva.Controllers
         }
 
         //stesso nome non da errore
-        [HttpGet]
-        public async Task<IActionResult> GetCart(string cartId)
+        [HttpGet("Preview")]
+        public async Task<IActionResult> Preview(string cartId)
         {
-            var carrello = await cartService.GetCart(cartId).ConfigureAwait(false);
+            var carrello = await cartService.Preview(cartId).ConfigureAwait(false);
             return Ok(carrello);
+        }
+        [HttpGet("Buy")]
+        public async Task<IActionResult> Buy(string cartId, decimal total)
+        {
+            var transaction = await cartService.Buy(cartId,total).ConfigureAwait(false);
+            return Ok(transaction);
         }
     }
 }

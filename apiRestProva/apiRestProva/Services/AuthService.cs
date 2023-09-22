@@ -45,12 +45,12 @@ namespace apiRestProva.Services
                     expires: DateTime.UtcNow.AddMinutes(60),                
                     signingCredentials: signingCredentials);
 
-                //trasfdormo oggetto in token stringa
+                //trasformo oggetto in token stringa
                 var accessToken = new JwtSecurityTokenHandler().WriteToken(jwtToken);
                 //nuovo oggetto auth response che contiene token
                 var result = new AuthToken { AccessToken = accessToken, validity =true };
 
-                await dbContext.Add(result);
+                await dbContext.AddToken(result);
                 
                 return result;
             }

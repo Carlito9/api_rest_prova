@@ -17,11 +17,11 @@ namespace apiRestProva.Services
             dbContext = _dbContext;
         }
 
-
-
         public Task<string> Buy(string cartId, decimal totalAmount)
         {
-            throw new NotImplementedException();
+            Random random = new Random();
+            return Task.FromResult(random.Next((int)Math.Pow(10,8), (int)Math.Pow(10, 9)).ToString());
+
         }
 
         public async Task<string> CreateCart(string username, string deviceId)
@@ -60,12 +60,12 @@ namespace apiRestProva.Services
 
         public Task<Cart> Preview(string cartId)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(dbContext.Carts.Include(c => c.articles).FirstOrDefault(c => c.cartId == cartId));
         }
 
         public async Task UpdateCart(string cartId, ArticleCartDTO article)
         {
-            //chiedi samu gestione articoli
+           
             var aCart = new ArticleCart
             {
                 CartId = cartId,
@@ -73,9 +73,10 @@ namespace apiRestProva.Services
                 Price = article.Price,
                 Quantity = article.Quantity
             };
-            //gestione await chiedi samu
+            
             var cart = await dbContext.Carts.Include(c=>c.articles).FirstOrDefaultAsync(c=>c.cartId == cartId);
             cart.articles.Add(aCart);
+            cart.totalAmount += aCart.Quantity * aCart.Price; 
        
             await dbContext.AddArticleCart(aCart);
             dbContext.SaveChanges();
