@@ -21,7 +21,7 @@ namespace apiRestProva.Services
 
         public async Task<AuthToken> LoginAsync(LoginRequest request)
         {
-            if (request.Password.Equals("pluservice"))
+            if (request.Password.Equals("string"))
             {
                 var claims = new[]
                 {
