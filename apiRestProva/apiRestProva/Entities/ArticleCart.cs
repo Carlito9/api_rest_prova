@@ -6,9 +6,11 @@ namespace apiRestProva.Entities
     public class ArticleCart
     {
         [Key]
-        public string ArticleCode { get; set; }
-        [Key]
         public string CartId { get; set; }
+
+        [Key]
+        public string ArticleCode { get; set; }
+        
         public decimal Price { get; set; }
 
         public int Quantity { get; set; }

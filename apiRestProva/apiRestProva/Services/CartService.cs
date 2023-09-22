@@ -28,14 +28,14 @@ namespace apiRestProva.Services
         {
             var cart = new Cart
             {
-                //chiedere a samu SU QUESTIONE DTOP
+                
                 articles = new List<ArticleCart>(),
                 expireCartDatetime = DateTime.UtcNow.AddMinutes(10),
                 cartId = deviceId + DateTime.UtcNow.ToString().Trim(),
                 totalAmount = 0
             };
             
-            await dbContext.Add(cart);
+            await dbContext.AddCart(cart);
             return cart.cartId;
 
         }
@@ -74,10 +74,10 @@ namespace apiRestProva.Services
                 Quantity = article.Quantity
             };
             //gestione await chiedi samu
-            var cart = await Task.FromResult(dbContext.Carts.Include(c=>c.articles).FirstOrDefault(c=>c.cartId == cartId));
+            var cart = await dbContext.Carts.Include(c=>c.articles).FirstOrDefaultAsync(c=>c.cartId == cartId);
             cart.articles.Add(aCart);
        
-            await dbContext.Add(aCart);
+            await dbContext.AddArticleCart(aCart);
             dbContext.SaveChanges();
         }
     }

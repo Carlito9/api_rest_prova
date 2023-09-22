@@ -45,7 +45,7 @@ namespace apiRestProva.Controllers
         }
 
         //stesso nome non da errore
-        [HttpGet("GetCart")]
+        [HttpGet]
         public async Task<IActionResult> GetCart(string cartId)
         {
             var carrello = await cartService.GetCart(cartId).ConfigureAwait(false);

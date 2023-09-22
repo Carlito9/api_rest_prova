@@ -23,20 +23,19 @@ namespace apiRestProva.Db
             modelBuilder.Entity<ArticleCart>()
         .HasKey(ac => new { ac.CartId, ac.ArticleCode });
         }
-
-
-        public async Task Add(AuthToken _token)
+        
+        public async Task AddToken(AuthToken _token)
         {
             Tokens.Add(_token);
             await this.SaveChangesAsync().ConfigureAwait(false);
         }
 
-        public async Task Add(Cart _cart)
+        public async Task AddCart(Cart _cart)
         {
             Carts.Add(_cart);
             await this.SaveChangesAsync().ConfigureAwait(false);
         }
-        public async Task Add(ArticleCart acart)
+        public async Task AddArticleCart(ArticleCart acart)
         {
             ArticleCarts.Add(acart);
             await this.SaveChangesAsync().ConfigureAwait(false);
