@@ -91,3 +91,6 @@ C:\Users\n.carletti\source\repos\api_rest_prova\apiRestProva\apiRestProva\obj\De
 C:\Users\n.carletti\source\repos\api_rest_prova\apiRestProva\apiRestProva\obj\Debug\net6.0\apiRestProva.csproj.CopyComplete
 C:\Users\n.carletti\source\repos\api_rest_prova\apiRestProva\apiRestProva\obj\Debug\net6.0\apiRestProva.genruntimeconfig.cache
 C:\Users\n.carletti\source\repos\api_rest_prova\apiRestProva\apiRestProva\obj\Debug\net6.0\ref\apiRestProva.dll
+C:\Users\n.carletti\source\repos\api_rest_prova\apiRestProva\apiRestProva\bin\Debug\net6.0\FluentValidation.dll
+C:\Users\n.carletti\source\repos\api_rest_prova\apiRestProva\apiRestProva\bin\Debug\net6.0\FluentValidation.AspNetCore.dll
+C:\Users\n.carletti\source\repos\api_rest_prova\apiRestProva\apiRestProva\bin\Debug\net6.0\FluentValidation.DependencyInjectionExtensions.dll

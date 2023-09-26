@@ -9,7 +9,7 @@ namespace apiRestProva.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CartController : ControllerBase
+    public class CartController : MyController
     {
 
 
@@ -26,15 +26,19 @@ namespace apiRestProva.Controllers
         {
             var articoli = await cartService.GetArticles().ConfigureAwait(false);
 
+            if (articoli == null)
+            {
+                return CustomError(new OutputError(500, "Impossibile visualizzare gli articoli"));
+            }
             return Ok(articoli);
         }
 
         [HttpPost("CreateCart")]
-        [Authorize]
+        [Authorize(AuthenticationSchemes ="nicola")]
         public async Task<IActionResult> CreateCart(string username, string deviceId)
         {
             var cartId = await cartService.CreateCart(username, deviceId).ConfigureAwait(false);
-
+           
             return Ok(cartId);
         }
 

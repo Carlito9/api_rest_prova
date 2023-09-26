@@ -7,6 +7,7 @@ namespace apiRestProva.Entities
     {
         [Key]
         [ForeignKey("ArticleCart")]
+        
         public string articleCode { get; set; }
         public string articleDescription { get; set; }
         public string carrierCode { get; set; }

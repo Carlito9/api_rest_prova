@@ -1,16 +1,23 @@
 using apiRestProva.Db;
 using apiRestProva.Entities;
+using apiRestProva.Models;
 using apiRestProva.Services;
+using apiRestProva.Validators;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using System;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-var builder = WebApplication.CreateBuilder(args);
 
+var builder = WebApplication.CreateBuilder(args);
+var services = builder.Services;
 var Configuration = builder.Configuration;
 builder.Services.AddSingleton(Configuration);
 //creo la dipendenza per jwt settings
@@ -25,6 +32,9 @@ var jwtSettings = builder.Services.Configure<JwtSettings>(section);
 //aggiungi chiamate httpclient
 builder.Services.AddHttpClient<HttpClientService>();
 builder.Services.AddControllers();
+services.AddFluentValidationAutoValidation();
+services.AddFluentValidationClientsideAdapters();
+services.AddValidatorsFromAssemblyContaining<ArticleCartDTOValidator>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
@@ -54,13 +64,13 @@ builder.Services.AddSwaggerGen(options =>
                     }
                 });
 });
-    
 
+//perchè?
 builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-}).AddJwtBearer("Bearer", options =>
+    {
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    }).AddJwtBearer("nicola", options =>
 {
     options.TokenValidationParameters = new()
     {
@@ -74,10 +84,8 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero
     };
 });
-builder.Services.AddDbContext<ProvaDbContext>();
-builder.Services.AddScoped<IArticleService,ArticleService>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<ICartService, CartService>();
+
+
 
 var app = builder.Build();
 
