@@ -22,19 +22,20 @@ namespace apiRestProva.Controllers
         }
 
         [HttpGet("GetArticles")]
-        public async Task<IActionResult> GetArticles()
+        
+        public async Task<object> GetArticles()
         {
             var articoli = await cartService.GetArticles().ConfigureAwait(false);
 
             if (articoli == null)
             {
-                return CustomError(new OutputError(500, "Impossibile visualizzare gli articoli"));
+                return new OutputError(500, "Impossibile visualizzare gli articoli");
             }
             return Ok(articoli);
         }
 
         [HttpPost("CreateCart")]
-        [Authorize(AuthenticationSchemes ="nicola")]
+       
         public async Task<IActionResult> CreateCart(string username, string deviceId)
         {
             var cartId = await cartService.CreateCart(username, deviceId).ConfigureAwait(false);
@@ -45,7 +46,14 @@ namespace apiRestProva.Controllers
         [HttpPost("UpdateCart")]
         public async Task<IActionResult> UpdateCart(string cartId, ArticleCartDTO article)
         {
-            await cartService.UpdateCart(cartId, article).ConfigureAwait(false);
+            try
+            {
+                await cartService.UpdateCart(cartId, article).ConfigureAwait(false);
+            }
+            catch (OutputException oerr)
+            {
+                return oerr.error;
+            }
 
             return Ok();
         }

@@ -11,7 +11,7 @@ namespace apiRestProva.Controllers
         {
             return new ObjectResult(outErr.ErrorMsg)
             {
-                StatusCode = outErr.ErrorCod
+                //StatusCode = outErr.ErrorCod
             };
         }
 

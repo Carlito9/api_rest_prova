@@ -19,13 +19,13 @@ namespace apiRestProva.Validators
                 .NotEmpty().WithMessage("Il codice è obbligatorio");
 
             RuleFor(acart => acart.Quantity)
-                .NotEmpty().LessThan(100).GreaterThan(0).WithMessage("Il codice è obbligatorio");
+                .LessThan(100).GreaterThan(0).WithMessage("La quantità deve essere <100 e >0");
 
             RuleFor(acart => acart).Custom((acart, context) =>
              {
                  if (!(acart.Quantity < acart.Price))
                  {
-                     context.AddFailure("Quantity", "La quantità deve essere minore al prezzo.");
+                     context.AddFailure("La quantità deve essere minore al prezzo.");
                  }
              });
         }

@@ -3,16 +3,17 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 
 namespace apiRestProva.Models
 {
-    public class OutputError 
+    public class OutputError : ObjectResult
     {
-        public int ErrorCod {get; set; }
+        
         public string ErrorMsg { get; set; }
-        public OutputError(int errorCod, string errorMsg)
+        public OutputError(int errorCod, string errorMsg) : base(errorMsg)
         {
-            ErrorCod = errorCod;
+            
             ErrorMsg = errorMsg;
+            StatusCode = errorCod;
         }
 
-      
+   
     }
 }

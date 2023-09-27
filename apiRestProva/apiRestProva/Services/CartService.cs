@@ -76,11 +76,15 @@ namespace apiRestProva.Services
             };
             
             var cart = await dbContext.Carts.Include(c=>c.articles).FirstOrDefaultAsync(c=>c.cartId == cartId);
-            cart.articles.Add(aCart);
-            cart.totalAmount += aCart.Quantity * aCart.Price; 
-       
-            await dbContext.AddArticleCart(aCart);
-            dbContext.SaveChanges();
+            if (cart.expireCartDatetime > DateTime.UtcNow)
+            {
+                cart.articles.Add(aCart);
+                cart.totalAmount += aCart.Quantity * aCart.Price;
+
+                await dbContext.AddArticleCart(aCart);
+                dbContext.SaveChanges();
+            }
+            else throw new OutputException(new OutputError(400, "il tempo per l'acquisto è scaduto"));
         }
     }
 }

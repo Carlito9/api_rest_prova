@@ -1,5 +1,6 @@
 ﻿using apiRestProva.Entities;
 using apiRestProva.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace apiRestProva.Controllers
@@ -16,7 +17,7 @@ namespace apiRestProva.Controllers
             authService = _authService;
         }
 
-        
+        [AllowAnonymous]
         [HttpPost("login")]      
         public async Task<IActionResult> Login(LoginRequest request)
         {
