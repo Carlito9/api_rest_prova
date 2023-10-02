@@ -2,6 +2,7 @@
 using apiRestProva.Entities;
 using apiRestProva.Models;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
 using System.Text.Json;
 namespace apiRestProva.Services
@@ -10,31 +11,56 @@ namespace apiRestProva.Services
     {
         private readonly HttpClientService httpClient;
         private readonly ProvaDbContext dbContext;
-
-        public CartService(HttpClientService _httpClient, ProvaDbContext _dbContext)
+        private readonly ILogger<CartService> logger;
+        private decimal money;
+        public CartService(HttpClientService _httpClient, ProvaDbContext _dbContext, ILogger<CartService> _logger)
         {
             httpClient = _httpClient;
             dbContext = _dbContext;
+            logger = _logger;
         }
 
-        public Task<string> Buy(string cartId, decimal totalAmount)
+        public async Task<string> Buy(string cartId, decimal totalAmount)
         {
+            var cart = await dbContext.Carts.Include(c => c.articles).FirstOrDefaultAsync(c => c.cartId == cartId);
+            if (cart == null)
+            {
+                logger.LogError($"id carrello: {cartId} inesistente");
+                throw new OutputException(new OutputError(400, "il carrello non esiste"));
+            }
+            logger.LogInformation("pagamento in corso");
+            Pay(totalAmount);
+            logger.LogInformation("pagamento effettuato");
             Random random = new Random();
-            return Task.FromResult(random.Next((int)Math.Pow(10,8), (int)Math.Pow(10, 9)).ToString());
+            return random.Next((int)Math.Pow(10,8), (int)Math.Pow(10, 9)).ToString();
 
+        }
+
+        private void Pay(decimal totalAmount)
+        {
+            money -= totalAmount;
         }
 
         public async Task<string> CreateCart(string username, string deviceId)
         {
+            logger.LogInformation("creazione carrello " + deviceId);
+            List<char> charsToRemove = new List<char>() { ' ', '/', ':' };
+            var cId = (deviceId + DateTime.UtcNow.ToString()).ToString();
+            foreach (char c in charsToRemove)
+            {
+                cId = cId.Replace(c.ToString(), "");
+            }
+
             var cart = new Cart
             {
                 
                 articles = new List<ArticleCart>(),
                 expireCartDatetime = DateTime.UtcNow.AddMinutes(10),
-                cartId = deviceId + DateTime.UtcNow.ToString().Trim(),
+                
+                cartId = cId,
                 totalAmount = 0
             };
-            
+            logger.LogInformation("carrello creato, sto aggiungendo al db");
             await dbContext.AddCart(cart);
             return cart.cartId;
 
@@ -55,12 +81,23 @@ namespace apiRestProva.Services
         public Task<CartDTO> GetCart(string cartId)
         {
             var cart = dbContext.Carts.Include(c => c.articles).FirstOrDefaultAsync(c => c.cartId == cartId);
+            if (cart == null)
+            {
+                logger.LogError($"id carrello: {cartId} inesistente");
+                throw new OutputException(new OutputError(400, "il carrello non esiste"));
+            }
             return Task.FromResult(cart.Result.MapToDTO());
         }
 
         public Task<PreviewDTO> Preview(string cartId)
         {
             var cart = dbContext.Carts.Include(c => c.articles).FirstOrDefaultAsync(c => c.cartId == cartId);
+
+            if (cart == null)
+            {
+                logger.LogError($"id carrello: {cartId} inesistente");
+                throw new OutputException(new OutputError(400, "il carrello non esiste"));
+            }
             return Task.FromResult(cart.Result.MapToPreview());
         }
 
@@ -76,15 +113,26 @@ namespace apiRestProva.Services
             };
             
             var cart = await dbContext.Carts.Include(c=>c.articles).FirstOrDefaultAsync(c=>c.cartId == cartId);
+            if (cart == null)
+            {
+                logger.LogError($"id carrello: {cartId} inesistente");
+                throw new OutputException(new OutputError(400, "il carrello non esiste"));
+            }
             if (cart.expireCartDatetime > DateTime.UtcNow)
             {
                 cart.articles.Add(aCart);
                 cart.totalAmount += aCart.Quantity * aCart.Price;
 
+                logger.LogInformation($"carrello: {cart.cartId} in aggiornamento nel db");
                 await dbContext.AddArticleCart(aCart);
                 dbContext.SaveChanges();
+                logger.LogInformation($"carrello: {cart.cartId} in aggiornato");
             }
-            else throw new OutputException(new OutputError(400, "il tempo per l'acquisto è scaduto"));
+            else
+            {
+                logger.LogError("il tempo per l'acquisto è scaduto");
+                throw new OutputException(new OutputError(400, "il tempo per l'acquisto è scaduto"));
+            }
         }
     }
 }

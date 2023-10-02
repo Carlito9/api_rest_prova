@@ -1,4 +1,5 @@
 ﻿using apiRestProva.Entities;
+using apiRestProva.Models;
 using apiRestProva.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -27,7 +28,7 @@ namespace apiRestProva.Controllers
                 return Ok(loginResponse);
             }
 
-            return BadRequest("password errata");
+            return new OutputError(400,"password errata");
         }
 
         [HttpPost("logout")]

@@ -3,6 +3,7 @@ using apiRestProva.Entities;
 using apiRestProva.Models;
 using apiRestProva.Services;
 using apiRestProva.Validators;
+using apiRestProva.Workers;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
+using Quartz;
 using System;
 using System.Text;
 using System.Text.Json;
@@ -96,7 +98,25 @@ builder.Services.AddDbContext<ProvaDbContext>();
 builder.Services.AddScoped<IArticleService, ArticleService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ICartService, CartService>();
+services.AddQuartz(options =>
+{
+    
 
+    var jobKey = typeof(LoggingJob).FullName;
+    options.AddJob<LoggingJob>(options => options.WithIdentity(jobKey));
+
+    options.AddTrigger(options =>
+    {
+        options.ForJob(jobKey).WithIdentity($"{jobKey}-trigger")
+            .WithCronSchedule("0/10 * * * * ?");
+    });
+    
+});
+
+services.AddQuartzHostedService(options =>
+{
+    options.WaitForJobsToComplete = true;
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -9,16 +9,18 @@ namespace apiRestProva.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CartController : MyController
+    public class CartController : ControllerBase
     {
 
 
         private readonly ICartService cartService;
 
+        private readonly ILogger<CartController> logger;
 
-        public CartController(ICartService _cartService)
+        public CartController(ICartService _cartService, ILogger<CartController> _logger)
         {
             cartService = _cartService;
+            logger = _logger;
         }
 
         [HttpGet("GetArticles")]
@@ -26,21 +28,21 @@ namespace apiRestProva.Controllers
         public async Task<object> GetArticles()
         {
             var articoli = await cartService.GetArticles().ConfigureAwait(false);
-
+            logger.LogInformation("Recupero Articoli...");
             if (articoli == null)
             {
                 return new OutputError(500, "Impossibile visualizzare gli articoli");
             }
             return Ok(articoli);
         }
-
+        
         [HttpPost("CreateCart")]
        
         public async Task<IActionResult> CreateCart(string username, string deviceId)
         {
-            var cartId = await cartService.CreateCart(username, deviceId).ConfigureAwait(false);
-           
-            return Ok(cartId);
+            var cart = await cartService.CreateCart(username, deviceId).ConfigureAwait(false);
+            logger.LogInformation("carrello aggiunto...");
+            return CreatedAtRoute("GetCart",new { cartId = cart },cart);
         }
 
         [HttpPost("UpdateCart")]
@@ -55,10 +57,10 @@ namespace apiRestProva.Controllers
                 return oerr.error;
             }
 
-            return Ok();
+            return NoContent();
         }
-
-        [HttpGet("GetCart")]
+        [AllowAnonymous]
+        [HttpGet("{cartId}", Name ="GetCart")]
         public async Task<IActionResult> GetCart(string cartId)
         {
             var carrello = await cartService.GetCart(cartId).ConfigureAwait(false);
